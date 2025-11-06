@@ -1,0 +1,121 @@
+#include <iostream>
+#include <string>
+using namespace std;
+
+// Base class
+class Person {
+protected:
+    int id;
+    string name;
+public:
+    Person(int i = 0, string n = "") { 
+        id = i; 
+        name = n; 
+    }
+
+    virtual void display() { 
+        cout << "ID: " << id << ", Name: " << name << endl; 
+    }
+};
+
+// Patient class
+class Patient : public Person {
+    string illness;
+public:
+    Patient(int i = 0, string n = "", string ill = "") { 
+        id = i; 
+        name = n; 
+        illness = ill; 
+    }
+
+    void display() override { 
+        Person::display(); 
+        cout << "Illness: " << illness << endl; 
+    }
+};
+
+// Staff class
+class Staff : public Person {
+    string role;
+public:
+    Staff(int i = 0, string n = "", string r = "") { 
+        id = i; 
+        name = n; 
+        role = r; 
+    }
+
+    void display() override { 
+        Person::display(); 
+        cout << "Role: " << role << endl; 
+    }
+};
+
+// Arrays
+const int MAX = 10;
+Patient patients[MAX];
+Staff staffs[MAX];
+int patientCount = 0, staffCount = 0;
+
+// Functions
+void addPatient() {
+    if(patientCount >= MAX){ 
+        cout << "Patient list full!\n"; 
+        return; 
+    }
+    int id; string name, illness;
+    cout << "Enter ID, Name, Illness: ";
+    cin >> id >> ws;
+    getline(cin, name);
+    getline(cin, illness);
+    patients[patientCount++] = Patient(id, name, illness);
+}
+
+void displayPatients() {
+    if(patientCount == 0) {
+        cout << "No patients to display.\n";
+        return;
+    }
+    for(int i = 0; i < patientCount; i++) 
+        patients[i].display();
+}
+
+void addStaff() {
+    if(staffCount >= MAX){ 
+        cout << "Staff list full!\n"; 
+        return; 
+    }
+    int id; string name, role;
+    cout << "Enter ID, Name, Role: ";
+    cin >> id >> ws;
+    getline(cin, name);
+    getline(cin, role);
+    staffs[staffCount++] = Staff(id, name, role);
+}
+
+void displayStaff() {
+    if(staffCount == 0) {
+        cout << "No staff to display.\n";
+        return;
+    }
+    for(int i = 0; i < staffCount; i++) 
+        staffs[i].display();
+}
+
+int main() {
+    int choice;
+    do {
+        cout << "\n=== Hospital Management System ===\n";
+        cout << "1. Add Patient\n2. Display Patients\n";
+        cout << "3. Add Staff\n4. Display Staff\n0. Exit\nChoice: ";
+        cin >> choice;
+        switch(choice){
+            case 1: addPatient(); break;
+            case 2: displayPatients(); break;
+            case 3: addStaff(); break;
+            case 4: displayStaff(); break;
+            case 0: cout << "Exiting...\n"; break;
+            default: cout << "Invalid choice!\n";
+        }
+    } while(choice != 0);
+    return 0;
+}
